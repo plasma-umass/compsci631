@@ -33,7 +33,7 @@ module Implicit = struct
     | ProjR of exp
 
   module Parsers = Lexparse_util.MakeParsers (struct
-      exception ParseError = Typeinf_parser.Error
+      exception ParseError = Parsing.Parse_error
       type token = Typeinf_parser.token
       type exp = Typeinf_syntax.Implicit.exp
       let parser = Typeinf_parser.program
