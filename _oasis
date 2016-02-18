@@ -1,0 +1,35 @@
+OASISFormat:     0.4
+OCamlVersion:    >= 4.02.0
+Name:            umass-compsci631
+Version:         1.0.0
+Synopsis:        Software for Programming Languages (COMPSCI631)
+Authors:         Arjun Guha
+License:         LGPL
+Plugins:         META (0.4), DevFiles (0.4)
+BuildTools:      ocamlbuild, camlp4, ocamldoc
+AlphaFeatures:   ocamlbuild_more_args
+XOCamlbuildExtraArgs: -cflags -w,-40,-short-paths
+
+Library compsci631
+  Path: lib
+  InternalModules:
+    PL_util,
+    Lexparse_util,
+    Typeinf_syntax,
+    Typeinf_parser,
+    Typeinf_lexer,
+    Typeinf_pretty
+  Modules:
+    Typeinf
+
+Test all_tests
+  Command: $testtool inline-test-runner dummy
+  Run$: flag(tests)
+  TestTools: testtool
+
+Document doc
+  Title: CS631 Support Code Documentation
+  Type: ocamlbuild (0.4)
+  XOCamlBuildPath: lib
+  XOCamlBuildModules:
+    Typeinf
