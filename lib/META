@@ -1,0 +1,11 @@
+# OASIS_START
+# DO NOT EDIT (digest: d8e9ccbf68202573eef9e05d7c73c14d)
+version = "1.0.0"
+description = "Software for Programming Languages (COMPSCI631)"
+archive(byte) = "compsci631.cma"
+archive(byte, plugin) = "compsci631.cma"
+archive(native) = "compsci631.cmxa"
+archive(native, plugin) = "compsci631.cmxs"
+exists_if = "compsci631.cma"
+# OASIS_STOP
+
