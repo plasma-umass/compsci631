@@ -18,9 +18,13 @@ Library compsci631
     Typeinf_syntax,
     Typeinf_parser,
     Typeinf_lexer,
-    Typeinf_pretty
+    Typeinf_pretty,
+    Imp_syntax,
+    Imp_parser,
+    Imp_lexer
   Modules:
-    Typeinf
+    Typeinf,
+    Imp
 
 Test all_tests
   Command: $testtool inline-test-runner dummy
