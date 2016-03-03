@@ -32,7 +32,7 @@ atom :
   | INT { Const (Int $1) }
   | ID { Id $1 }
   | TRUE { Const (Bool true) }
-  | FALSE { Const (Bool true) }
+  | FALSE { Const (Bool false) }
   | EMPTY { Empty }
   | LPAREN exps RPAREN { $2 }
   | atom DOT INT { projn $1 $3 }
