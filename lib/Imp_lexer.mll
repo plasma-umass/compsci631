@@ -15,6 +15,7 @@ rule token = parse
   | blank+ { token lexbuf }
   | eof { EOF }
   | decimal as n { INT (int_of_string n) }
+  | "==" { EQEQ }
   | "(" { LPAREN }
   | ")" { RPAREN }
   | "+" { PLUS }
@@ -37,6 +38,7 @@ rule token = parse
   | "invariant" { INVARIANT }
   | "true" { TRUE }
   | "false" { FALSE }
+  | "assert" { ASSERT }
   | eof { EOF }
   | id as x { ID x }
 

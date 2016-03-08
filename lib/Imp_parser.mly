@@ -3,8 +3,8 @@ open Imp_syntax
 %}
 
 %token SKIP ABORT IF ELSE WHILE SEMI INVARIANT LBRACE RBRACE LPAREN RPAREN
-%token PLUS MINUS STAR LT GT EQ BANG AMPAMP PIPEPIPE
-%token TRUE FALSE
+%token PLUS MINUS STAR LT GT EQ BANG AMPAMP PIPEPIPE EQEQ
+%token TRUE FALSE ASSERT
 %token EOF
 %token<string> ID
 %token<int> INT
@@ -35,6 +35,7 @@ batom :
   | LPAREN bexp RPAREN { $2 }
   | BANG batom { BNot $2 }
   | aexp LT aexp { BLT ($1, $3) }
+  | aexp EQEQ aexp { BEq ($1, $3) }
 
 and_ :
   | batom { $1 }
@@ -54,6 +55,7 @@ acmd :
   | LBRACE cmd RBRACE { $2 }
   | IF LPAREN bexp RPAREN acmd ELSE acmd { CIf ($3, $5, $7) }
   | WHILE bexp INVARIANT bexp acmd { CWhile ($2, $4, $5) }
+  | ASSERT bexp { CIf ($2, CSkip,CAbort) }
 
 cmd :
   | acmd { $1 }

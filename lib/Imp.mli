@@ -10,6 +10,7 @@ type bexp = Imp_syntax.bexp =
   | BOr of bexp * bexp
   | BNot of bexp
   | BLT of aexp * aexp
+  | BEq of aexp * aexp
 
 type cmd = Imp_syntax.cmd =
   | CSkip

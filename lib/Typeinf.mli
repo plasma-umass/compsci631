@@ -77,7 +77,6 @@ module Explicit : sig
   (** Prints the expression. *)
   val print_exp : exp -> unit
 
-
   (** Produces a [string] that represents the type. *)
   val string_of_typ : typ -> string
 

@@ -10,6 +10,7 @@ type bexp =
   | BOr of bexp * bexp
   | BNot of bexp
   | BLT of aexp * aexp
+  | BEq of aexp * aexp
 
 type cmd =
   | CSkip
