@@ -1,7 +1,8 @@
 # OASIS_START
-# DO NOT EDIT (digest: 83a785d79b134a34b47f8d216da070b9)
+# DO NOT EDIT (digest: 4e5d1c0fe933388ba999157b76651e46)
 Typeinf
 Imp
+Smtlib
 PL_util
 Lexparse_util
 Typeinf_syntax
@@ -11,4 +12,7 @@ Typeinf_pretty
 Imp_syntax
 Imp_parser
 Imp_lexer
+Smtlib_syntax
+Smtlib_parser
+Smtlib_lexer
 # OASIS_STOP

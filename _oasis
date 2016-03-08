@@ -21,10 +21,14 @@ Library compsci631
     Typeinf_pretty,
     Imp_syntax,
     Imp_parser,
-    Imp_lexer
+    Imp_lexer,
+    Smtlib_syntax,
+    Smtlib_parser,
+    Smtlib_lexer
   Modules:
     Typeinf,
-    Imp
+    Imp,
+    Smtlib
 
 Test all_tests
   Command: $testtool inline-test-runner dummy
@@ -36,4 +40,6 @@ Document doc
   Type: ocamlbuild (0.4)
   XOCamlBuildPath: lib
   XOCamlBuildModules:
-    Typeinf
+    Typeinf,
+    Imp,
+    Smtlib
