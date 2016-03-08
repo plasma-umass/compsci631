@@ -25,6 +25,8 @@ rule token = parse
   | "}" { RBRACE }
   | ";" { SEMI }
   | "=" { EQ }
+  | ">=" { GEQ }
+  | "<=" { LEQ }
   | ">" { GT }
   | "<" { LT }
   | "!" { BANG }
@@ -39,6 +41,8 @@ rule token = parse
   | "true" { TRUE }
   | "false" { FALSE }
   | "assert" { ASSERT }
+  | "requires" { REQUIRES }
+  | "ensures" { ENSURES }
   | eof { EOF }
   | id as x { ID x }
 

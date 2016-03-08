@@ -42,7 +42,7 @@ let make_solver (z3_path : string) : solver =
   let open Unix in
   let (z3_stdin, z3_stdin_writer) = pipe () in
   let (z3_stdout_reader, z3_stdout) = pipe () in
-  let _ = create_process z3_path [| z3_path; "-in"; "-smt2" |]
+  let pid = create_process z3_path [| z3_path; "-in"; "-smt2" |]
     z3_stdin z3_stdout stderr in
   let in_chan = in_channel_of_descr z3_stdout_reader in
   let out_chan = out_channel_of_descr z3_stdin_writer in
@@ -139,6 +139,8 @@ let array_sort dom rng = SortApp (Id "Array", [dom; rng])
 
 let int_to_term n = Int n
 
+let const x = Const (Id x)
+
 let bool_to_term b = match b with
   | true -> Const (Id "true")
   | false -> Const (Id "false")
@@ -147,9 +149,17 @@ let app2 x term1 term2 = App (Id x, [term1; term2])
 
 let equals = app2 "="
 
-let and_ = app2 "and"
+let and_ term1 term2 = match (term1, term2) with
+  | (App (Id "and", alist1), App (Id "and", alist2)) -> App (Id "and", alist1 @ alist2)
+  | (App (Id "and", alist1), _) -> App (Id "and", alist1 @ [ term2 ])
+  | (_, App (Id "and", alist2)) -> App (Id "and", term1 :: alist2)
+  | _ -> App (Id "and", [term1; term2])
 
-let or_ = app2 "or"
+let or_ term1 term2 = match (term1, term2) with
+  | (App (Id "or", alist1), App (Id "or", alist2)) -> App (Id "or", alist1 @ alist2)
+  | (App (Id "or", alist1), _) -> App (Id "or", alist1 @ [ term2 ])
+  | (_, App (Id "or", alist2)) -> App (Id "or", term1 :: alist2)
+  | _ -> App (Id "or", [term1; term2])
 
 let not term = App (Id "not", [term])
 
@@ -157,6 +167,14 @@ let implies = app2 "=>"
 
 let add = app2 "+"
 
+let sub = app2 "-"
+
 let mul = app2 "*"
 
 let lt = app2 "<"
+
+let gt = app2 ">"
+
+let lte = app2 "<="
+
+let gte = app2 ">="

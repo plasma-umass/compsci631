@@ -1,16 +1,17 @@
+type cmp = Lt | Gt | Eq | Lte | Gte
+type aop = Add | Sub | Mul
+
 type aexp =
   | AConst of int
   | AVar of string
-  | AAdd of aexp * aexp
-  | AMul of aexp * aexp
+  | AOp of aop * aexp * aexp
 
 type bexp =
   | BConst of bool
   | BAnd of bexp * bexp
   | BOr of bexp * bexp
   | BNot of bexp
-  | BLT of aexp * aexp
-  | BEq of aexp * aexp
+  | BCmp of cmp * aexp * aexp
 
 type cmd =
   | CSkip
