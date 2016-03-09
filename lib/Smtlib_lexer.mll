@@ -7,7 +7,7 @@ let simple_symbol_char = [ 'A'-'Z' 'a'-'z' '+' '-' '/' '*' '=' '%' '?' '!' '.' '
 let simple_symbol = simple_symbol_char (['0' - '9'] | simple_symbol_char )*
 let keyword = ':' simple_symbol
 let blank = [ ' ' '\t' ]
-let numeral = ((['1'-'9']['0'-'9']*) | ['0'])
+let numeral = ((['-']?['1'-'9']['0'-'9']*) | ['0'])
 
 rule token = parse
   | ";" [^ '\n' '\r']+ { token lexbuf }
