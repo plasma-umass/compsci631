@@ -42,6 +42,10 @@ let make_solver (z3_path : string) : solver =
   let open Unix in
   let (z3_stdin, z3_stdin_writer) = pipe () in
   let (z3_stdout_reader, z3_stdout) = pipe () in
+  (* If the ocaml ends of the pipes aren't marked close-on-exec, they
+     will remain open in the fork/exec'd z3 process, and z3 won't exit
+     when our main ocaml process ends. *)
+  let _ = set_close_on_exec z3_stdin_writer; set_close_on_exec z3_stdout_reader in
   let pid = create_process z3_path [| z3_path; "-in"; "-smt2" |]
     z3_stdin z3_stdout stderr in
   let in_chan = in_channel_of_descr z3_stdout_reader in
