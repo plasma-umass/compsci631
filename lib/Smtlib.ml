@@ -70,9 +70,12 @@ let make_solver (z3_path : string) : solver =
   set_binary_mode_in in_chan false;
   let solver = { stdin = out_chan; stdout = in_chan; stdout_lexbuf = Lexing.from_channel in_chan } in
   _solvers := (pid, solver) :: !_solvers;
-  match command solver print_success_command with
-    | SSymbol "success" -> solver
-    | _ -> failwith "could not configure solver to :print-success"
+  try
+    match command solver print_success_command with
+      | SSymbol "success" -> solver
+      | _ -> failwith "could not configure solver to :print-success"
+  with
+    Sys_error("Bad file descriptor") -> failwith "couldn't talk to solver, double-check path"
 
 let sexp_to_string (sexp : sexp) : string =
   let open Buffer in
