@@ -27,10 +27,12 @@ type identifier =
 type sort =
   | Sort of identifier
   | SortApp of identifier * sort list
+  | BitVecSort of int
 
 type term =
   | String of string
   | Int of int
+  | BitVec of int * int
   | Const of identifier
   | App of identifier * term list
   | Let of string * term * term
@@ -48,6 +50,8 @@ val assert_ : solver -> term -> unit
 
 (** [check_sat solver] runs the command [(check-sat)] *)
 val check_sat : solver -> check_sat_result
+
+val get_model : solver -> (identifier * term) list
 
 (** [push solver] runs the command [(push)] *)
 val push : solver -> unit
@@ -85,7 +89,10 @@ val and_ : term -> term -> term
 val or_ : term -> term -> term
 
 (** [not e] produces [(not e)]. *)
-val not : term -> term
+val not_ : term -> term
+
+(** [ite e1 e2 e3] produces [(ite e1 e2 e3)] *)
+val ite : term -> term -> term -> term
 
 (** [implies e1 e2] produces [(=> e1 e2)]. *)
 val implies : term -> term -> term
@@ -111,6 +118,30 @@ val lte : term -> term -> term
 (** [gte e1 e2] produces [(>= e1 e2)]. *)
 val gte : term -> term -> term
 
+(** {1 Bit-Vectors} *)
+
+(** [bv_sort n] produces [(_ BitVec n)]. *)
+val bv_sort : int -> sort
+
+val bv : int -> int -> term
+
+val bvadd : term -> term -> term
+val bvsub : term -> term -> term
+val bvmul : term -> term -> term
+val bvurem : term -> term -> term
+val bvsrem : term -> term -> term
+val bvsmod : term -> term -> term
+val bvshl : term -> term -> term
+val bvlshr : term -> term -> term
+val bvashr : term -> term -> term
+val bvor : term -> term -> term
+val bvand : term -> term -> term
+val bvnand : term -> term -> term
+val bvnor : term -> term -> term
+val bvxnor : term -> term -> term
+val bvneg : term -> term
+val bvnot : term -> term
+
 (** {1 Low-level interface} *)
 
 (** The variant of s-expressions used by SMT-LIB. *)
@@ -120,7 +151,7 @@ type sexp = Smtlib_syntax.sexp =
   | SString of string
   | SKeyword of string
   | SInt of int
-
+  | SBitVec of int * int
 
 (** [command solver sexp] sends a command to the solver and reads a response. *)
 val command : solver -> sexp -> sexp

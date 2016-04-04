@@ -5,6 +5,7 @@ type solver = { stdin : out_channel; stdout_lexbuf : Lexing.lexbuf }
 (* Does not flush *)
 let rec write_sexp (out_chan : out_channel) (e : sexp): unit = match e with
   | SInt n -> output_string out_chan (string_of_int n)
+  | SBitVec (n, w) -> Printf.fprintf out_chan "(_ bv%d %d)" n w
   | SSymbol str -> output_string out_chan str
   | SKeyword str -> output_string out_chan str
   | SString str ->
@@ -66,6 +67,7 @@ let sexp_to_string (sexp : sexp) : string =
     | SKeyword x -> add_string buf x;
     | SString x -> add_char buf '"'; add_string buf x; add_char buf '"'
     | SInt n -> add_string buf (string_of_int n)
+    | SBitVec (n, w) -> add_string buf (Format.sprintf "(_ bv%d %d)" n w)
   and list_to_string (alist : sexp list) : unit = match alist with
     | [] -> ()
     | [x] -> to_string x
@@ -84,10 +86,12 @@ type identifier =
 type sort =
   | Sort of identifier
   | SortApp of identifier * sort list
+  | BitVecSort of int
 
 type term =
   | String of string
   | Int of int
+  | BitVec of int * int
   | Const of identifier
   | App of identifier * term list
   | Let of string * term * term
@@ -99,16 +103,25 @@ let rec sort_to_sexp (sort : sort) : sexp = match sort with
   | Sort x -> id_to_sexp x
   | SortApp (x, sorts) ->
     SList ((id_to_sexp x) :: (List.map sort_to_sexp sorts))
+  | BitVecSort n -> SList [ SSymbol "_"; SSymbol "BitVec"; SInt n ]
 
 let rec term_to_sexp (term : term) : sexp = match term with
   | String s -> SString s
   | Int n -> SInt n
+  | BitVec (n, w) -> SBitVec (n, w)
   | Const x -> id_to_sexp x
   | App (f, args) -> SList (id_to_sexp f :: (List.map term_to_sexp args))
   | Let (x, term1, term2) ->
     SList [SSymbol "let";
            SList [SList [SSymbol x; term_to_sexp term1]];
            term_to_sexp term2]
+
+let rec sexp_to_term (sexp : sexp) : term = match sexp with
+  | SString s -> String s
+  | SInt n -> Int n
+  | SBitVec (n, w) -> BitVec (n, w)
+  | SSymbol x -> Const (Id x)
+  | _ -> failwith "unparsable term"
 
 let expect_success (solver : solver) (sexp : sexp) : unit =
   match command solver sexp with
@@ -132,6 +145,17 @@ let check_sat (solver : solver) : check_sat_result =
   | sexp -> failwith ("unexpected result from (check-sat), got " ^
                       sexp_to_string sexp)
 
+let get_model (solver : solver) : (identifier * term) list =
+  let rec read_model sexp = match sexp with
+    | [] -> []
+    | (SList [SSymbol "define-fun"; SSymbol x; SList []; _; sexp]) :: rest ->
+      (Id x, sexp_to_term sexp) :: read_model rest
+    | _ :: rest -> read_model rest in
+  match command solver (SList [SSymbol "get-model"]) with
+  | SList (SSymbol "model" :: alist) -> read_model alist
+  | sexp -> failwith ("expected model, got " ^ (sexp_to_string sexp))
+
+
 let push (solver : solver) = expect_success solver (SList [SSymbol "push"])
 let pop (solver : solver) = expect_success solver (SList [SSymbol "pop"])
 
@@ -140,6 +164,8 @@ let int_sort  = Sort (Id "Int")
 let bool_sort = Sort (Id "Bool")
 
 let array_sort dom rng = SortApp (Id "Array", [dom; rng])
+
+let bv_sort w = BitVecSort w
 
 let int_to_term n = Int n
 
@@ -150,6 +176,8 @@ let bool_to_term b = match b with
   | false -> Const (Id "false")
 
 let app2 x term1 term2 = App (Id x, [term1; term2])
+
+let app1 x term = App (Id x, [term])
 
 let equals = app2 "="
 
@@ -165,7 +193,9 @@ let or_ term1 term2 = match (term1, term2) with
   | (_, App (Id "or", alist2)) -> App (Id "or", term1 :: alist2)
   | _ -> App (Id "or", [term1; term2])
 
-let not term = App (Id "not", [term])
+let not_ term = App (Id "not", [term])
+
+let ite e1 e2 e3 = App (Id "ite", [e1; e2; e3])
 
 let implies = app2 "=>"
 
@@ -182,3 +212,22 @@ let gt = app2 ">"
 let lte = app2 "<="
 
 let gte = app2 ">="
+
+let bv n w = BitVec (n, w)
+
+let bvadd = app2 "bvadd"
+let bvsub = app2 "bvsub"
+let bvmul = app2 "bvmul"
+let bvurem = app2 "bvurem"
+let bvsrem = app2 "bvsrem"
+let bvsmod = app2 "bvsmod"
+let bvshl = app2 "bvshl"
+let bvlshr = app2 "bvlshr"
+let bvashr = app2 "bvashr"
+let bvor = app2 "bvor"
+let bvand = app2 "bvand"
+let bvnand = app2 "bvnand"
+let bvnor = app2 "bvnor"
+let bvxnor = app2 "bvxnor"
+let bvneg = app1 "bvneg"
+let bvnot = app1 "bvnot"

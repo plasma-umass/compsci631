@@ -7,6 +7,7 @@ open Imp_syntax
 %token<string> SYMBOL
 %token<string> KEYWORD
 %token<int> INT
+%token<int * int> HEX
 %token EOF
 
 %start sexp
@@ -20,6 +21,7 @@ sexp_list :
 
 sexp :
   | INT { SInt $1 }
+  | HEX { let (n, w) = $1 in SBitVec (n, w) }
   | STRING { SString $1 }
   | SYMBOL { SSymbol $1 }
   | KEYWORD { SKeyword $1 }

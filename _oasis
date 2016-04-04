@@ -12,6 +12,9 @@ XOCamlbuildExtraArgs: -cflags -w,-40,-short-paths
 
 Library compsci631
   Path: lib
+  BuildDepends:
+    mparser,
+    mparser.re
   InternalModules:
     PL_util,
     Lexparse_util,
@@ -28,7 +31,8 @@ Library compsci631
   Modules:
     Typeinf,
     Imp,
-    Smtlib
+    Smtlib,
+    Sketching
 
 Test all_tests
   Command: $testtool inline-test-runner dummy
