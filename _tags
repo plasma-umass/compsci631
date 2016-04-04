@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 20d49fa8c6e712a9aec4bf972491aea6)
+# DO NOT EDIT (digest: 108b7395ecda88320469f92d2741e1ea)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -16,4 +16,6 @@ true: annot, bin_annot
 "_darcs": not_hygienic
 # Library compsci631
 "lib/compsci631.cmxs": use_compsci631
+<lib/*.ml{,i,y}>: package(mparser)
+<lib/*.ml{,i,y}>: package(mparser.re)
 # OASIS_STOP

@@ -1,7 +1,8 @@
 # OASIS_START
-# DO NOT EDIT (digest: b3f499a59b9f7721e0db33467d541ca6)
+# DO NOT EDIT (digest: e097e03e933e0dd8cb89edb9b267d418)
 version = "1.1.0"
 description = "Software for Programming Languages (COMPSCI631)"
+requires = "mparser mparser.re"
 archive(byte) = "compsci631.cma"
 archive(byte, plugin) = "compsci631.cma"
 archive(native) = "compsci631.cmxa"
