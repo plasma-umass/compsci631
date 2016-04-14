@@ -1,6 +1,6 @@
 include Smtlib_syntax
 
-type solver = { stdin : out_channel; stdout_lexbuf : Lexing.lexbuf }
+type solver = { stdin : out_channel; stdout : in_channel; stdout_lexbuf : Lexing.lexbuf }
 
 (* Does not flush *)
 let rec write_sexp (out_chan : out_channel) (e : sexp): unit = match e with
@@ -39,6 +39,22 @@ let command (solver : solver) (sexp : sexp) = write solver sexp; read solver
 let print_success_command =
   SList [SSymbol "set-option"; SKeyword ":print-success"; SSymbol "true"]
 
+(* keep track of all solvers we spawn, so we can close our read/write
+   FDs when the solvers exit *)
+let _solvers : (int * solver) list ref = ref []
+
+let handle_sigchild (_ : int) : unit =
+  let open Printf in
+  let (pid, status) = Unix.waitpid [] (-1) in
+  eprintf "solver child (pid %d) exited\n%!" pid;
+  try
+    let solver = List.assoc pid !_solvers in
+    close_in_noerr solver.stdout; close_out_noerr solver.stdin
+  with
+    _ -> ()
+
+let () = Sys.set_signal Sys.sigchld (Sys.Signal_handle handle_sigchild)
+
 let make_solver (z3_path : string) : solver =
   let open Unix in
   let (z3_stdin, z3_stdin_writer) = pipe () in
@@ -53,10 +69,14 @@ let make_solver (z3_path : string) : solver =
   let out_chan = out_channel_of_descr z3_stdin_writer in
   set_binary_mode_out out_chan false;
   set_binary_mode_in in_chan false;
-  let solver = { stdin = out_chan; stdout_lexbuf = Lexing.from_channel in_chan } in
-  match command solver print_success_command with
-    | SSymbol "success" -> solver
-    | _ -> failwith "could not configure solver to :print-success"
+  let solver = { stdin = out_chan; stdout = in_chan; stdout_lexbuf = Lexing.from_channel in_chan } in
+  _solvers := (pid, solver) :: !_solvers;
+  try
+    match command solver print_success_command with
+      | SSymbol "success" -> solver
+      | _ -> failwith "could not configure solver to :print-success"
+  with
+    Sys_error("Bad file descriptor") -> failwith "couldn't talk to solver, double-check path"
 
 let sexp_to_string (sexp : sexp) : string =
   let open Buffer in
