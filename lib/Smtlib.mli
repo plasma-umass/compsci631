@@ -123,6 +123,7 @@ val gte : term -> term -> term
 (** [bv_sort n] produces [(_ BitVec n)]. *)
 val bv_sort : int -> sort
 
+(** [bv n w] produces a bit-vector of width [w] that represents the integer [n]. *)
 val bv : int -> int -> term
 
 val bvadd : term -> term -> term
