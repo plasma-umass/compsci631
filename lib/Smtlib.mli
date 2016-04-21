@@ -139,6 +139,8 @@ val bvand : term -> term -> term
 val bvnand : term -> term -> term
 val bvnor : term -> term -> term
 val bvxnor : term -> term -> term
+val bvudiv : term -> term -> term
+val bvsdiv : term -> term -> term
 val bvneg : term -> term
 val bvnot : term -> term
 
