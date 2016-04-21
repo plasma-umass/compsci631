@@ -3,9 +3,9 @@
   open Smtlib_parser
 
   let parse_hex (str : string) : (int * int) =
-    let len = String.length str in
-    let str = "0x" ^ (String.sub str 2 (len - 2)) in
-    (int_of_string str, (len - 2)* 4)
+    let len = (String.length str) - 2 in
+    let str = "0x" ^ (String.sub str 2 len) in
+    (int_of_string str, len * 4)
 }
 
 let simple_symbol_char = [ 'A'-'Z' 'a'-'z' '+' '-' '/' '*' '=' '%' '?' '!' '.' '$' '_' '~' '&' '^' '<' '>' '@']
