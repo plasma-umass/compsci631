@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 108b7395ecda88320469f92d2741e1ea)
+# DO NOT EDIT (digest: 44cf7e6d1e8a0547cf111d10816be61d)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -18,4 +18,16 @@ true: annot, bin_annot
 "lib/compsci631.cmxs": use_compsci631
 <lib/*.ml{,i,y}>: package(mparser)
 <lib/*.ml{,i,y}>: package(mparser.re)
+<lib/*.ml{,i,y}>: package(ppx_deriving.std)
+# Executable testtool
+"tests/Main.byte": package(mparser)
+"tests/Main.byte": package(mparser.re)
+"tests/Main.byte": package(ppx_deriving.std)
+"tests/Main.byte": package(ppx_test)
+"tests/Main.byte": use_compsci631
+<tests/*.ml{,i,y}>: package(mparser)
+<tests/*.ml{,i,y}>: package(mparser.re)
+<tests/*.ml{,i,y}>: package(ppx_deriving.std)
+<tests/*.ml{,i,y}>: package(ppx_test)
+<tests/*.ml{,i,y}>: use_compsci631
 # OASIS_STOP
