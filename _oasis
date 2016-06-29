@@ -14,7 +14,8 @@ Library compsci631
   Path: lib
   BuildDepends:
     mparser,
-    mparser.re
+    mparser.re,
+    ppx_deriving.std
   InternalModules:
     PL_util,
     Lexparse_util,
@@ -29,13 +30,22 @@ Library compsci631
     Smtlib_parser,
     Smtlib_lexer
   Modules:
+    Interp_util,
     Typeinf,
     Imp,
     Smtlib,
     Sketching
 
+Executable testtool
+  Build$: flag(tests)
+  Path: tests
+  BuildDepends:
+    compsci631,
+    ppx_test
+  MainIs: Main.ml
+
 Test all_tests
-  Command: $testtool inline-test-runner dummy
+  Command: $testtool
   Run$: flag(tests)
   TestTools: testtool
 
@@ -47,4 +57,5 @@ Document doc
     Typeinf,
     Imp,
     Sketching,
-    Smtlib
+    Smtlib,
+    Interp_util
