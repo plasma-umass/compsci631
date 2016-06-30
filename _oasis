@@ -28,9 +28,11 @@ Library compsci631
     Imp_lexer,
     Smtlib_syntax,
     Smtlib_parser,
-    Smtlib_lexer
+    Smtlib_lexer,
+    Generic_parser
   Modules:
     Interp_util,
+    Typechecker_util,
     Typeinf,
     Imp,
     Smtlib,

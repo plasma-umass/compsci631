@@ -38,8 +38,7 @@ module Parser = struct
   open MParser
   open MParser_RE
   open Tokens
-
-  type 'a parser = ('a, unit) MParser.t
+  open Generic_parser
 
   let infix sym op : (exp, unit) operator =
     let f e1 e2 = Op2 (op, e1, e2) in
@@ -50,12 +49,6 @@ module Parser = struct
     [infix "+" Add; infix "-" Sub];
     [infix "==" Eq; infix ">" GT; infix "<" LT]
   ]
-
-  let id = regexp (make_regexp "[A-Za-z_][A-Za-z_0-9_']*") <<< spaces
-
-  let rev_fold_left f xs = match List.rev xs with
-    | [] -> raise (Failure "expected at least one element (internal error)")
-    | x :: xs -> List.fold_left f x xs
 
   let rec atom s  = (
     parens exp <|>
@@ -81,6 +74,7 @@ module Parser = struct
     (symbol "empty?" >> get |>> fun e -> (IsEmpty e)) <|>
     (many1 get |>> rev_fold_left (fun x y -> App (y, x)))
      ) s
+
   and list s = (
     sep_by1 app (symbol "::") |>>
     rev_fold_left (fun x y -> Cons (y, x))
@@ -99,21 +93,7 @@ module Parser = struct
     (pipe2 (symbol "fix" >> id) (symbol "->" >> exp)
        (fun x e -> Fix (x, e)))
     ) s
-
-  let from_string (str : string) : exp = match parse_string exp str () with
-    | Success exp -> exp
-    | Failed (msg, _) ->
-      Printf.eprintf "%s\n%!" msg; failwith msg
-
-  let from_file (fname : string) : exp =
-    let chan = open_in fname in
-    match parse_channel exp chan () with
-    | Success exp -> exp
-    | Failed (msg, _) ->
-      Printf.eprintf "%s\n%!" msg;
-      failwith msg
-
 end
 
-let from_string = Parser.from_string
-let from_file = Parser.from_file
+let from_string = Generic_parser.from_string Parser.exp
+let from_file = Generic_parser.from_file Parser.exp
