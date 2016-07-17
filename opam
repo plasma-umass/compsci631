@@ -19,4 +19,5 @@ depends: [
   "pa_ounit"
   "re" >= "1.5.0"
   "mparser" >= "1.2"
+  "ppx_deriving"
 ]
