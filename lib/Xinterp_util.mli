@@ -34,7 +34,7 @@ type exp =
   | IsEmpty of exp
   | Record of (string * exp) list
   | GetField of exp * string
-  | MkArray of exp * exp
+  | MkArray of exp
   | GetArray of exp * exp
   | SetArray of exp * exp * exp
   [@@deriving show]
