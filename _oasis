@@ -29,6 +29,7 @@ Library compsci631
     Generic_parser
   Modules:
     Interp_util,
+    Xinterp_util,
     Typechecker_util,
     Typeinf,
     Imp,
