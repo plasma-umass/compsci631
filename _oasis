@@ -56,5 +56,5 @@ Document doc
     Typeinf,
     Imp,
     Sketching,
-    Smtlib,
-    Interp_util
+    Interp_util,
+    Xinterp_util
