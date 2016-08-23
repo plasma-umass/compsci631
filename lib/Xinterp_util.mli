@@ -1,4 +1,4 @@
-(** Support code for writing an interpreter for a functional language. *)
+(** Support code for writing an interpreter for a functional-imperative language. *)
 
 type id = string [@@deriving show]
 
