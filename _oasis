@@ -30,7 +30,7 @@ Library compsci631
   Modules:
     Interp_util,
     Xinterp_util,
-    Typechecker_util,
+    Tc_util,
     Typeinf,
     Imp,
     Sketching

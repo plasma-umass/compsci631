@@ -1,4 +1,18 @@
+(** Support code for writing a type checker. *)
+
 type id = string [@@deriving show]
+
+type tid = string [@@deriving show]
+
+type typ =
+  | TBool
+  | TInt
+  | TFun of typ * typ
+  | TList of typ
+  | TRecord of (string * typ) list
+  | TArr of typ
+  | TForall of tid * typ
+  | TId of tid
 
 type op2 =
   | LT
@@ -16,30 +30,29 @@ type const =
   | Bool of bool
   [@@deriving show]
 
-type typ =
-  | TInt
-  | TBool
-  | TFun of typ * typ
-  | TRecord of (string * typ)
-  | TList of typ
-  [@@deriving show]
-
 type exp =
+  | Id of id
   | Const of const
   | Op2 of op2 * exp * exp
   | If of exp * exp * exp
-  | Id of id
   | Let of id * exp * exp
   | Fun of id * typ * exp
-  | Fix of id * typ * exp
+  | Fix of id * typ * typ * exp
   | App of exp * exp
-  | Empty of typ
+  | Empty of typ 
   | Cons of exp * exp
   | Head of exp
   | Tail of exp
   | IsEmpty of exp
   | Record of (string * exp) list
   | GetField of exp * string
+  | MkArray of exp * typ
+  | GetArray of exp * exp
+  | SetArray of exp * exp * exp
+  | TypFun of tid * exp
+  | TypApp of exp * typ
   [@@deriving show]
 
 
+val from_string : string -> exp
+val from_file : string -> exp
