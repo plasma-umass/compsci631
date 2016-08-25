@@ -33,7 +33,9 @@ Library compsci631
     Tc_util,
     Typeinf,
     Imp,
-    Sketching
+    Sketching,
+    Compiler_util,
+    Arm
 
 Executable testtool
   Build$: flag(tests)
