@@ -19,10 +19,6 @@ Library compsci631
   InternalModules:
     PL_util,
     Lexparse_util,
-    Typeinf_syntax,
-    Typeinf_parser,
-    Typeinf_lexer,
-    Typeinf_pretty,
     Imp_syntax,
     Imp_parser,
     Imp_lexer,
@@ -59,4 +55,6 @@ Document doc
     Imp,
     Sketching,
     Interp_util,
-    Xinterp_util
+    Xinterp_util,
+    Arm,
+    Compiler_util
