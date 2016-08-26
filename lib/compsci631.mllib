@@ -1,19 +1,14 @@
 # OASIS_START
-# DO NOT EDIT (digest: 2697d7ad8a3620ceb4412cdbf0fd4479)
+# DO NOT EDIT (digest: 903bcaa7d268e70ef881a7ec0b83e93a)
 Interp_util
 Xinterp_util
 Tc_util
-Typeinf
 Imp
 Sketching
 Compiler_util
 Arm
 PL_util
 Lexparse_util
-Typeinf_syntax
-Typeinf_parser
-Typeinf_lexer
-Typeinf_pretty
 Imp_syntax
 Imp_parser
 Imp_lexer
