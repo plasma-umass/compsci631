@@ -27,7 +27,6 @@ Library compsci631
     Interp_util,
     Xinterp_util,
     Tc_util,
-    Typeinf,
     Imp,
     Sketching,
     Compiler_util,
@@ -51,7 +50,6 @@ Document doc
   Type: ocamlbuild (0.4)
   XOCamlBuildPath: lib
   XOCamlBuildModules:
-    Typeinf,
     Imp,
     Sketching,
     Interp_util,

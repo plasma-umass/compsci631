@@ -1,7 +1,7 @@
 open Xinterp_util
 
 let%TEST "array creation" =
-  from_string "array(10)" = MkArray (Const (Int 10))
+  from_string "array(10,true)" = MkArray (Const (Int 10), Const (Bool true))
                                     
 let%TEST "array indexing" =
   from_string "arr[1][2]" = GetArray (GetArray (Id "arr", Const (Int 1)), Const (Int 2))
