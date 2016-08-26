@@ -32,7 +32,7 @@ type exp =
   | IsEmpty of exp
   | Record of (string * exp) list
   | GetField of exp * string
-  | MkArray of exp
+  | MkArray of exp * exp
   | GetArray of exp * exp
   | SetArray of exp * exp * exp 
   [@@deriving show]
@@ -58,7 +58,9 @@ module Parser = struct
     (symbol "true" |>> fun _ -> Const (Bool true)) <|>
     (symbol "false" |>> fun _ -> Const (Bool false)) <|>
     (symbol "empty" |>> fun _ -> Empty) <|>
-    (symbol "array" >> symbol "(" >> exp << symbol ")" |>> fun e -> MkArray e) <|>
+    (pipe2 (symbol "array" >> symbol "(" >> exp)
+           (symbol "," >> exp  << symbol ")")
+           (fun e1 e2 -> MkArray (e1, e2))) <|>
     (decimal |>> (fun n -> Const (Int n))) <|>
     braces (comma_sep field |>> fun xs -> Record xs) <|>
     (id |>> (fun x -> Id x))
