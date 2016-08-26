@@ -2,6 +2,8 @@ type id = string [@@deriving show]
 
 type tid = string [@@deriving show]
 
+type metavar = string [@@deriving show]
+                      
 type typ =
   | TBool
   | TInt
@@ -11,9 +13,10 @@ type typ =
   | TArr of typ
   | TForall of tid * typ
   | TId of tid
+  | TMetavar of string             
   [@@deriving show]
 
-type op2 =
+type op2 = Xinterp_util.op2 = 
   | LT
   | GT
   | Eq
@@ -24,7 +27,7 @@ type op2 =
   | Mod
   [@@deriving show]
 
-type const =
+type const = Xinterp_util.const =
   | Int of int
   | Bool of bool
   [@@deriving show]

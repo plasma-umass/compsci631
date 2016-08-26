@@ -1,6 +1,6 @@
 type id = string [@@deriving show]
 
-type op2 =
+type op2 = Interp_util.op2 =
   | LT
   | GT
   | Eq
@@ -11,7 +11,7 @@ type op2 =
   | Mod
   [@@deriving show]
 
-type const =
+type const = Interp_util.const =
   | Int of int
   | Bool of bool
   [@@deriving show]
