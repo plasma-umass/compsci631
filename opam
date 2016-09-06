@@ -14,10 +14,10 @@ remove: [
   ["ocamlfind" "remove" "compsci631"]
 ]
 depends: [
-  "ocamlfind" >= "1.6.2"
-  "oasis" {build} >= "0.4.0"
+  "ocamlfind"       {>= "1.6.2"}
+  "oasis"           {build & >= "0.4.0"}
   "pa_ounit"
-  "re" >= "1.5.0"
-  "mparser" >= "1.2"
+  "re"              {>= "1.5.0"}
+  "mparser"         {>= "1.2"}
   "ppx_deriving"
 ]
