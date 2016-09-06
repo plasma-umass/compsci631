@@ -1,5 +1,5 @@
 OASISFormat:     0.4
-OCamlVersion:    >= 4.03.0
+OCamlVersion:    >= 4.02.0
 Name:            umass-compsci631
 Version:         2.0.0
 Synopsis:        Software for Programming Languages (COMPSCI631)
