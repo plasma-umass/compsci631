@@ -11,8 +11,6 @@ and Linux.
   following the directions under *Using your distribution's package
   system* instead of using the generic installation script.
   
-- Insa
-  
 - Check the version of OCaml installed by running:
 
   ```
@@ -25,11 +23,12 @@ and Linux.
   ```
   opam switch 4.02.3
   ```
-  
-- Install the required packages:
 
+- From the command line, run:
 
   ```
-  opam install ocamlfind pa_ounit re mparser ppx_deriving
-  opam pin add compsci631 https://github.com/plasma-umass/compsci631.git 
+  opam repository add plasma-opam https://github.com/plasma-umass/opam-repository.git
+  opam install compsci631
   ```
+
+  This will install the required support packages for COMPSCI631 assignments.
