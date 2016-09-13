@@ -93,7 +93,6 @@ module Parser = struct
   and cmp s = expression operators list s
 
   and exp s = (
-    cmp <|>
     (pipe3 (symbol "if" >> exp) (symbol "then" >> exp) (symbol "else" >> exp)
        (fun e1 e2 e3 -> If (e1, e2, e3))) <|>
     (pipe3 (symbol "let" >> id) (symbol "=" >> exp) (symbol "in" >> exp)
@@ -102,7 +101,7 @@ module Parser = struct
        (fun x e -> Fun (x, e))) <|>
     (pipe2 (symbol "fix" >> id) (symbol "->" >> exp)
        (fun x e -> Fix (x, e)))
-    ) s
+    <|> cmp) s
 end
 
 let from_string = Generic_parser.from_string Parser.exp
