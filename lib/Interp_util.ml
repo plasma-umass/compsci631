@@ -66,14 +66,13 @@ module Parser = struct
   and get s = (
     pipe2 atom ((symbol "." >> (sep_by1 id (symbol "."))) <|> (return []))
       (fun e fields -> List.fold_left (fun x y -> GetField (x, y)) e fields)
-    ) s
+  ) s
 
   and app s = (
     (symbol "head" >> get |>> fun e -> (Head e)) <|>
     (symbol "tail" >> get |>> fun e -> (Tail e)) <|>
     (symbol "empty?" >> get |>> fun e -> (IsEmpty e)) <|>
-    (many1 get |>> rev_fold_left (fun x y -> App (y, x)))
-     ) s
+    app_pattern get (fun x y -> App (x, y))) s
 
   and list s = (
     sep_by1 app (symbol "::") |>>

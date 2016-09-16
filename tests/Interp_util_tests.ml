@@ -23,3 +23,7 @@ let%TEST "Harsh example 1" =
 let%TEST "Harsh example 2" =
   from_string "let x = 700 in x" =
     Let ("x", Const (Int 700), Id "x")
+
+let%TEST "chained application" =
+  from_string "f x y" =
+    App (App (Id "f", Id "x"), Id "y")
