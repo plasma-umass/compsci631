@@ -72,12 +72,12 @@ module Parser = struct
   ]
 
   let rec typ_atom s = (
-    parens typ
+    (id |>> fun x -> TId x)
+    <|> parens typ
     <|> (symbol "bool" |>> fun _ -> TBool)
-    <|> (symbol "int" |>> fun _ -> TBool) 
+    <|> (symbol "int" |>> fun _ -> TInt) 
     <|> braces (comma_sep typ_field |>> fun xs -> TRecord xs)
-    <|> brackets (typ  |>> fun t -> TArr t)
-    <|> (id |>> fun x -> TId x)) s
+    <|> brackets (typ  |>> fun t -> TArr t)) s
 
   and typ_list_array' acc_t s = (
     (symbol "list" >>= fun _ -> typ_list_array' (TList acc_t))
@@ -99,8 +99,8 @@ module Parser = struct
   and typ_field s =
     pipe2 id (symbol ":" >> typ) (fun x t -> (x, t)) s
                         
-
   let rec atom s  = (
+    (id |>> (fun x -> Id x)) <|>
     parens exp <|>
     (symbol "true" |>> fun _ -> Const (Bool true)) <|>
     (symbol "false" |>> fun _ -> Const (Bool false)) <|>
@@ -109,8 +109,7 @@ module Parser = struct
            (symbol "," >> exp  << symbol ")")
            (fun e1 e2 -> MkArray (e1, e2))) <|>
     (decimal |>> (fun n -> Const (Int n))) <|>
-    braces (comma_sep field |>> fun xs -> Record xs) <|>
-    (id |>> (fun x -> Id x))
+    braces (comma_sep field |>> fun xs -> Record xs)
     ) s
 
   and field s =
