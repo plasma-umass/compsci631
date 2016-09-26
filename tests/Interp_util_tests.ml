@@ -27,3 +27,8 @@ let%TEST "Harsh example 2" =
 let%TEST "chained application" =
   from_string "f x y" =
     App (App (Id "f", Id "x"), Id "y")
+
+let%TEST "A variable name can start with a keyword" =
+  from_string "let funx = 700 in funx" =
+    Let ("funx", Const (Int 700), Id "funx")
+
