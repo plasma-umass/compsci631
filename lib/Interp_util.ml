@@ -51,13 +51,13 @@ module Parser = struct
   ]
 
   let rec atom s  = (
+    (id |>> (fun x -> Id x)) <|>
     parens exp <|>
     (symbol "true" |>> fun _ -> Const (Bool true)) <|>
     (symbol "false" |>> fun _ -> Const (Bool false)) <|>
     (symbol "empty" |>> fun _ -> Empty) <|>
     (decimal |>> (fun n -> Const (Int n))) <|>
-    braces (comma_sep field |>> fun xs -> Record xs) <|>
-    (id |>> (fun x -> Id x))
+    braces (comma_sep field |>> fun xs -> Record xs)
     ) s
 
   and field s =
@@ -69,10 +69,10 @@ module Parser = struct
   ) s
 
   and app s = (
+    app_pattern get (fun x y -> App (x, y)) <|>
     (symbol "head" >> get |>> fun e -> (Head e)) <|>
     (symbol "tail" >> get |>> fun e -> (Tail e)) <|>
-    (symbol "empty?" >> get |>> fun e -> (IsEmpty e)) <|>
-    app_pattern get (fun x y -> App (x, y))) s
+    (symbol "empty?" >> get |>> fun e -> (IsEmpty e))) s
 
   and list s = (
     sep_by1 app (symbol "::") |>>
@@ -82,6 +82,7 @@ module Parser = struct
   and cmp s = expression operators list s
 
   and exp s = (
+    cmp <|>
     (pipe3 (symbol "if" >> exp) (symbol "then" >> exp) (symbol "else" >> exp)
        (fun e1 e2 e3 -> If (e1, e2, e3))) <|>
     (pipe3 (symbol "let" >> id) (symbol "=" >> exp) (symbol "in" >> exp)
@@ -89,8 +90,7 @@ module Parser = struct
     (pipe2 (symbol "fun" >> id) (symbol "->" >> exp)
        (fun x e -> Fun (x, e))) <|>
     (pipe2 (symbol "fix" >> id) (symbol "->" >> exp)
-       (fun x e -> Fix (x, e)))
-    <|> cmp) s
+       (fun x e -> Fix (x, e)))) s
 end
 
 let from_string = Generic_parser.from_string Parser.exp

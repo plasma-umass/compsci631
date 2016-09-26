@@ -32,3 +32,5 @@ let%TEST "A variable name can start with a keyword" =
   from_string "let funx = 700 in funx" =
     Let ("funx", Const (Int 700), Id "funx")
 
+let%TEST Space_required_fail =
+  let _ = from_string "let f = funx -> 700 in 0" in ()
