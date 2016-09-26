@@ -1,6 +1,6 @@
 open Interp_util
 
-let%TEST "normal subtraction associaticity" =
+let%TEST "normal subtraction associativity" =
   from_string "1 - 2 - 3" =
    Op2 (Sub, Op2 (Sub, Const (Int 1), Const (Int 2)), Const (Int 3))
 
