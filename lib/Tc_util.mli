@@ -16,6 +16,7 @@ type typ =
   | TForall of tid * typ
   | TId of tid
   | TMetavar of string (** For type inference only. Ignore this in the type checker. *)
+  [@@deriving show]
 
 type op2 = Xinterp_util.op2 =
   | LT
