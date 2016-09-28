@@ -14,8 +14,11 @@ let%TEST "Nested list type" =
 let%TEST "type application" =
   from_string "f<int -> int> 10" =
     App (TypApp (Id "f", TFun (TInt, TInt)), Const (Int 10))
-              
 
 let%TEST "A variable name can start with a keyword" =
   from_string "let funx = 700 in funx" =
     Let ("funx", Const (Int 700), Id "funx")
+
+let%TEST "Type functions parse expression" =
+  from_string "tfun alpha.fun (x : alpha) -> x" =
+    TypFun ("alpha", Fun ("x", TId "alpha", Id "x"))
