@@ -22,3 +22,8 @@ let%TEST "A variable name can start with a keyword" =
 let%TEST "Type functions parse expression" =
   from_string "tfun alpha.fun (x : alpha) -> x" =
     TypFun ("alpha", Fun ("x", TId "alpha", Id "x"))
+
+let%TEST "Fix parses correctly" =
+  from_string "fix (f : int) -> f" =
+    Fix ("f", TInt, Id "f")
+              

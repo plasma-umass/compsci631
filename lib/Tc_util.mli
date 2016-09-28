@@ -41,7 +41,7 @@ type exp =
   | If of exp * exp * exp
   | Let of id * exp * exp
   | Fun of id * typ * exp
-  | Fix of id * typ * typ * exp
+  | Fix of id * typ * exp
   | App of exp * exp
   | Empty of typ 
   | Cons of exp * exp

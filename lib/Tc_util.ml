@@ -39,7 +39,7 @@ type exp =
   | If of exp * exp * exp
   | Let of id * exp * exp
   | Fun of id * typ * exp
-  | Fix of id * typ * typ * exp
+  | Fix of id * typ * exp
   | App of exp * exp
   | Empty of typ 
   | Cons of exp * exp
@@ -157,11 +157,10 @@ module Parser = struct
                (symbol ":" >> typ)
                (symbol ")" >> symbol "->" >> exp)
                (fun x t e -> Fun (x, t, e)))
-    <|> (pipe4 (symbol "fix" >> symbol "(" >> id)
+    <|> (pipe3 (symbol "fix" >> symbol "(" >> id)
                (symbol ":" >> typ)
-               (symbol ")" >> symbol ":" >> typ_list_array) (* NOTE(arjun): restricted! *)
-               (symbol "->" >> exp)
-               (fun x t1 t2 e -> Fix (x, t1, t2, e)))
+               (symbol ")" >> symbol "->" >> exp)
+               (fun x t e -> Fix (x, t, e)))
     ) s
 end
 
