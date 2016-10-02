@@ -81,7 +81,7 @@ module Parser = struct
   and app s = (
     (symbol "head" >> get |>> fun e -> (Head e)) <|>
     (symbol "tail" >> get |>> fun e -> (Tail e)) <|>
-    (symbol "empty?" >> get |>> fun e -> (IsEmpty e)) <|>
+    (symbol "is_empty" >> get |>> fun e -> (IsEmpty e)) <|>
     (app_pattern get (fun x y -> App (x, y)))) s
 
   and list s = (

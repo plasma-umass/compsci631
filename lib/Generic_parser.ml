@@ -14,7 +14,7 @@ let app_pattern p mk_app =
 let reserved_words = [
     "true"; "false"; "empty"; "head"; "tail"; "empty?"; "if"; "then";
     "else"; "let"; "in"; "fun"; "fix"; "bool"; "int"; "list"; "array";
-    "tfun"
+    "tfun"; "is_empty"
   ]
 
 let id : string parser =

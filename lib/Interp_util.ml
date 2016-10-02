@@ -72,7 +72,7 @@ module Parser = struct
     app_pattern get (fun x y -> App (x, y)) <|>
     (symbol "head" >> get |>> fun e -> (Head e)) <|>
     (symbol "tail" >> get |>> fun e -> (Tail e)) <|>
-    (symbol "empty?" >> get |>> fun e -> (IsEmpty e))) s
+    (symbol "is_empty" >> get |>> fun e -> (IsEmpty e))) s
 
   and list s = (
     sep_by1 app (symbol "::") |>>

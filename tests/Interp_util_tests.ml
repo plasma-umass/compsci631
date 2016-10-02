@@ -34,3 +34,6 @@ let%TEST "A variable name can start with a keyword" =
 
 let%TEST Space_required_fail =
   let _ = from_string "let f = funx -> 700 in 0" in ()
+
+let%TEST "empty? parses correctly" =
+  from_string "is_empty(x)" = IsEmpty (Id "x")
