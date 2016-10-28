@@ -53,6 +53,9 @@ type exp =
     (symbol "true" |>> fun _ -> Const (Bool true)) <|>
     (symbol "false" |>> fun _ -> Const (Bool false)) <|>
     (decimal |>> (fun n -> Const (Int n))) <|>
+    (pipe2 (symbol "array" >> symbol "(" >> exp)
+       (between (symbol ",") (symbol ")") exp)
+       (fun e1 e2 -> MkArray (e1, e2))) <|>
     (id |>> (fun x -> Id x))
     ) s
 
