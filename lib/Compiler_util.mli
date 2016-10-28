@@ -24,7 +24,7 @@ type exp =
   | Op2 of op2 * exp * exp
   | If of exp * exp * exp
   | Let of id * exp * exp
-  | Fun of id list * exp
+  | Fun of id * id list * exp
   | App of exp * exp list
   | MkArray of exp * exp
   | GetArray of exp * exp
@@ -43,7 +43,7 @@ type aexp =
 
  (** Binding forms. *)
  and bexp =
-  | BFun of id list * anfexp
+  | BFun of id * id list * anfexp
   | BAtom of aexp
   | BOp2 of op2 * aexp * aexp
   | BMkArray of aexp * aexp

@@ -24,7 +24,7 @@ type exp =
   | Op2 of op2 * exp * exp
   | If of exp * exp * exp
   | Let of id * exp * exp
-  | Fun of id list * exp
+  | Fun of id * id list * exp
   | App of exp * exp list
   | MkArray of exp * exp
   | GetArray of exp * exp
@@ -85,9 +85,10 @@ type exp =
        (fun e1 e2 e3 -> If (e1, e2, e3))) 
     <|> (pipe3 (symbol "let" >> id) (symbol "=" >> exp) (symbol "in" >> exp)
                (fun x e1 e2 -> Let (x, e1, e2)))
-    <|> (pipe2 (symbol "fun" >> many id)
+    <|> (pipe3 (symbol "fun" >> id)
+               (parens (many id))
                (symbol "->" >> exp)
-               (fun xs e -> Fun (xs, e)))
+               (fun f xs e -> Fun (f, xs, e)))
     <|> cmp
     ) s
 end
@@ -101,7 +102,7 @@ type aexp =
   [@@deriving show]
 
  and bexp =
-  | BFun of id list * anfexp
+  | BFun of id * id list * anfexp
   | BAtom of aexp
   | BOp2 of op2 * aexp * aexp
   | BMkArray of aexp * aexp
@@ -124,7 +125,7 @@ let rec free_vars (exp : anfexp) : IdSet.t = match exp with
   | ERet a -> free_vars_aexp a
 
 and free_vars_bexp (exp : bexp) : IdSet.t = match exp with
-  | BFun (xs, e) -> IdSet.diff (free_vars e) (IdSet.of_list xs)
+  | BFun (f, xs, e) -> IdSet.diff (free_vars e) (IdSet.of_list (f :: xs))
   | BAtom e -> free_vars_aexp e
   | BOp2 (_, e1, e2)
   | BMkArray (e1, e2)
@@ -143,10 +144,10 @@ let rec rename (x : id) (y : id) (exp : anfexp) : anfexp = match exp with
   | ERet a -> ERet (rename_aexp x y a)
 
 and rename_bexp (x : id) (y : id) (exp : bexp) : bexp = match exp with
-  | BFun (zs, e) ->
-     if List.mem x zs then BFun (zs, e)
+  | BFun (f, zs, e) ->
+     if List.mem x (f :: zs) then BFun (f, zs, e)
      else if List.mem y zs then assert false (* need capture-free substitution *)
-     else BFun (zs, rename x y e)
+     else BFun (f, zs, rename x y e)
   | BAtom e -> BAtom (rename_aexp x y e)
   | BOp2 (op, e1, e2) -> BOp2 (op, rename_aexp x y e1, rename_aexp x y e2)
   | BMkArray (e1, e2) -> BMkArray (rename_aexp x y e1, rename_aexp x y e2)
