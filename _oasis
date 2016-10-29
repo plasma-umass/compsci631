@@ -56,4 +56,5 @@ Document doc
     Interp_util,
     Xinterp_util,
     Arm,
-    Compiler_util
+    Compiler_util,
+    Compiler_interp
