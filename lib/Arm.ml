@@ -256,6 +256,7 @@ module Printer = struct
     let of_assembly (fmt : formatter) (x : assembly) : unit =
       pp_open_vbox fmt 0;
       pp_print_list ~pp_sep:pp_force_newline of_pseudo_instr fmt x;
+      pp_print_flush fmt ();
       pp_close_box fmt ()
 
   end
