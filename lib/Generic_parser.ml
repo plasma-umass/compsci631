@@ -28,14 +28,14 @@ let rev_fold_left f xs = match List.rev xs with
   | [] -> raise (Failure "expected at least one element (internal error)")
   | x :: xs -> List.fold_left f x xs
 
-let from_string exp (str : string) = match parse_string exp str () with
+let from_string exp (str : string) = match parse_string (spaces >> exp) str () with
   | Success exp -> exp
   | Failed (msg, _) ->
     Printf.eprintf "%s\n%!" msg; failwith msg
 
 let from_file exp (fname : string) =
   let chan = open_in fname in
-  match parse_channel exp chan () with
+  match parse_channel (spaces >> exp) chan () with
   | Success exp -> exp
   | Failed (msg, _) ->
     Printf.eprintf "%s\n%!" msg;
