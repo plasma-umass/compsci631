@@ -233,7 +233,7 @@ module Printer = struct
     let of_index (fmt : formatter) (index : index) = match index with
       | Imm n -> fprintf fmt "#%d" n
       | Reg r -> fprintf fmt "%s" (of_reg r)
-      | LSL (r, n) -> fprintf fmt "+%s, LSL #%d" (of_reg r) n
+      | LSL (r, n) -> fprintf fmt "%s, LSL #%d" (of_reg r) n
 
     let of_full_operand (fmt : formatter) (x : full_operand) = match x with
       | Op op -> of_operand fmt op
