@@ -117,18 +117,9 @@ module Parser = struct
      ((cmd |>> fun c2 -> CSeq (c1, c2)) <|>
       return c1)) s
 
-  let from_string (str : string) : cmd = match parse_string cmd str () with
-    | Success c -> c
-    | Failed (msg, e) ->
-      Printf.eprintf "%s\n%!" msg; failwith msg
+  let from_string = Generic_parser.from_string cmd
 
-  let from_file (fname : string) : cmd =
-    let chan = open_in fname in
-    match parse_channel cmd chan () with
-    | Success c -> c
-    | Failed (msg, e) ->
-      Printf.eprintf "%s\n%!" msg;
-      failwith msg
+  let from_file = Generic_parser.from_file cmd
 
 end
 
