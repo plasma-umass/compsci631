@@ -33,7 +33,7 @@ type exp =
   | Abort
   [@@deriving show]
 
-  module Parser = struct
+module Parser = struct
   open MParser
   open MParser_RE
   open Tokens
@@ -88,7 +88,7 @@ type exp =
     <|> (pipe3 (symbol "let" >> id) (symbol "=" >> exp) (symbol "in" >> exp)
                (fun x e1 e2 -> Let (x, e1, e2)))
     <|> (pipe3 (symbol "fun" >> id)
-               (parens (many id))
+               (parens (comma_sep id))
                (symbol "->" >> exp)
                (fun f xs e -> Fun (f, xs, e)))
     <|> cmp
