@@ -29,7 +29,8 @@ type exp =
   | MkArray of exp * exp
   | GetArray of exp * exp
   | SetArray of exp * exp * exp
-  | Seq of exp * exp 
+  | Seq of exp * exp
+  | Abort
   [@@deriving show]
 
 val from_string : string -> exp
@@ -58,6 +59,7 @@ and anfexp =
   | EIf of aexp * anfexp * anfexp
   | EApp of aexp * aexp list
   | ERet of aexp
+  | EAbort
   [@@deriving show]
 
 module IdSet : Set.S with type elt = id

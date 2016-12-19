@@ -1,5 +1,7 @@
 open Compiler_util
 
+exception Aborted of string
+
 type value =
   | VInt of int
   | VBool of bool
@@ -29,7 +31,9 @@ let eval'_op (op : op2) (v1 : value) (v2 : value) : value =
   | Add -> VInt (to_int v1 + to_int v2)
   | Sub -> VInt (to_int v1 - to_int v2)
   | Mul -> VInt (to_int v1 * to_int v2)
-  | Div -> VInt (to_int v1 / to_int v2)
+  | Div ->
+     (try VInt (to_int v1 / to_int v2)
+      with Division_by_zero -> raise (Aborted "division by zero"))
   | Mod -> VInt (to_int v1 mod to_int v2)
 
 let rec eval' (env : env) (exp : exp) : value = match exp with
@@ -53,14 +57,20 @@ let rec eval' (env : env) (exp : exp) : value = match exp with
        | _ -> failwith "Expected closure")
   | MkArray (e1, e2) ->
       VArray (Array.make (to_int (eval' env e1)) (eval' env e2))
-  | GetArray (e1, e2) -> (to_array (eval' env e1)).(to_int (eval' env e2))
+  | GetArray (e1, e2) ->
+     let arr = to_array (eval' env e1) in
+     let ix =  to_int (eval' env e2) in
+     (try arr.(ix)
+      with Invalid_argument msg -> raise (Aborted msg))
   | SetArray (e1, e2, e3) ->
     let arr = to_array (eval' env e1) in
     let ix = to_int (eval' env e2) in
-    let _ = arr.(ix) <- eval' env e3 in
-    VInt 0 (* arbitrary *)
+    let elt = eval' env e3 in
+    (try let _ = arr.(ix) <- elt in VInt 0 (* arbitrary *)
+     with Invalid_argument msg -> raise (Aborted msg))
   | Seq (e1, e2) ->
       let _ = eval' env e1 in
       eval' env e2
+  | Abort -> raise (Aborted "Abort expression encountered")
 
  let eval e = eval' [] e

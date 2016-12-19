@@ -29,7 +29,8 @@ type exp =
   | MkArray of exp * exp
   | GetArray of exp * exp
   | SetArray of exp * exp * exp
-  | Seq of exp * exp 
+  | Seq of exp * exp
+  | Abort
   [@@deriving show]
 
   module Parser = struct
@@ -50,6 +51,7 @@ type exp =
 
   let rec atom s  = (
     parens exp <|>
+    (symbol "abort" |>> fun _ -> Abort) <|>  
     (symbol "true" |>> fun _ -> Const (Bool true)) <|>
     (symbol "false" |>> fun _ -> Const (Bool false)) <|>
     (decimal |>> (fun n -> Const (Int n))) <|>
@@ -116,6 +118,7 @@ and anfexp =
   | EIf of aexp * anfexp * anfexp
   | EApp of aexp * aexp list
   | ERet of aexp
+  | EAbort
   [@@deriving show]
 
 let rec free_vars (exp : anfexp) : IdSet.t = match exp with
@@ -123,6 +126,7 @@ let rec free_vars (exp : anfexp) : IdSet.t = match exp with
   | EIf (e1, e2, e3) -> IdSet.union (free_vars_aexp e1) (IdSet.union (free_vars e2) (free_vars e3))
   | EApp (f, es) -> List.fold_left IdSet.union (free_vars_aexp f) (List.map free_vars_aexp es)
   | ERet a -> free_vars_aexp a
+  | EAbort -> IdSet.empty
 
 and free_vars_bexp (exp : bexp) : IdSet.t = match exp with
   | BFun (f, xs, e) -> IdSet.diff (free_vars e) (IdSet.of_list (f :: xs))
@@ -142,6 +146,7 @@ let rec rename (x : id) (y : id) (exp : anfexp) : anfexp = match exp with
   | EIf (e1, e2, e3) -> EIf (rename_aexp x y e1, rename x y e2, rename x y e3)
   | EApp (f, es) -> EApp (rename_aexp x y f, List.map (rename_aexp x y) es)
   | ERet a -> ERet (rename_aexp x y a)
+  | EAbort -> exp
 
 and rename_bexp (x : id) (y : id) (exp : bexp) : bexp = match exp with
   | BFun (f, zs, e) ->
