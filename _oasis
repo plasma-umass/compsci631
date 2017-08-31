@@ -1,7 +1,7 @@
 OASISFormat:     0.4
 OCamlVersion:    >= 4.02.0
 Name:            umass-compsci631
-Version:         2.0.14
+Version:         2.0.15
 Synopsis:        Software for Programming Languages (COMPSCI631)
 Authors:         Arjun Guha
 License:         LGPL

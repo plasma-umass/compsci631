@@ -1,6 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: c435645793831f6efad6782b4942d3c4)
-version = "2.0.12"
+# DO NOT EDIT (digest: 271842f0c42bc60f476ef72bb088e74c)
+version = "2.0.15"
 description = "Software for Programming Languages (COMPSCI631)"
 requires = "mparser mparser.re ppx_deriving.std"
 archive(byte) = "compsci631.cma"
