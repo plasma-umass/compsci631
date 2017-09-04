@@ -17,17 +17,20 @@ and Linux.
   ocaml -version
   ```
   
-  You should have version 4.02.*x* installed (4.03 will not work). If the wrong version is
+  You should have version 4.04.2 installed (4.05 will not work). If the wrong version is
   installed, run the following command:
   
   ```
-  opam switch 4.02.3
+  opam switch 4.04.2
   ```
 
-- From the command line, run:
+  Follow any on-screen directions that the command provides.
+  
+
+- Finally, to install the support code for this class, run:
 
   ```
-  opam repository add plasma-opam https://github.com/plasma-umass/opam-repository.git
+  opam pin add compsci631 https://github.com/plasma-umass/compsci631.git
   opam install compsci631
   ```
 
