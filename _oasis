@@ -1,7 +1,7 @@
 OASISFormat:     0.4
-OCamlVersion:    >= 4.02.0
+OCamlVersion:    >= 4.04.0
 Name:            umass-compsci631
-Version:         2.0.15
+Version:         2.0.16
 Synopsis:        Software for Programming Languages (COMPSCI631)
 Authors:         Arjun Guha
 License:         LGPL
@@ -15,7 +15,8 @@ Library compsci631
   BuildDepends:
     mparser,
     mparser.re,
-    ppx_deriving.std
+    ppx_deriving.std,
+    ppx_test
   InternalModules:
     PL_util,
     Lexparse_util,
@@ -31,7 +32,8 @@ Library compsci631
     Sketching,
     Compiler_util,
     Compiler_interp,
-    Arm
+    Arm,
+    PTest
 
 Executable testtool
   Build$: flag(tests)
