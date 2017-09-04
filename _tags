@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 44cf7e6d1e8a0547cf111d10816be61d)
+# DO NOT EDIT (digest: 9554c7c8ee9d29a2da60f8930b2b1b8e)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -19,6 +19,7 @@ true: annot, bin_annot
 <lib/*.ml{,i,y}>: package(mparser)
 <lib/*.ml{,i,y}>: package(mparser.re)
 <lib/*.ml{,i,y}>: package(ppx_deriving.std)
+<lib/*.ml{,i,y}>: package(ppx_test)
 # Executable testtool
 "tests/Main.byte": package(mparser)
 "tests/Main.byte": package(mparser.re)
