@@ -24,7 +24,18 @@ and Linux.
   opam switch 4.04.2
   ```
 
-  Follow any on-screen directions that the command provides.
+  Follow any on-screen directions that the command provides. In particular, you will probably
+  need to run:
+  
+  ```
+  eval `opam config env`
+  ```
+  
+  followed by:
+  
+  ```
+  opam update
+  ```
   
 
 - Finally, to install the support code for this class, run:
