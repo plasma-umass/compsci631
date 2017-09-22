@@ -1,7 +1,7 @@
 OASISFormat:     0.4
 OCamlVersion:    >= 4.04.0
 Name:            umass-compsci631
-Version:         2.0.16
+Version:         2.0.17
 Synopsis:        Software for Programming Languages (COMPSCI631)
 Authors:         Arjun Guha
 License:         LGPL
@@ -22,9 +22,9 @@ Library compsci631
     Lexparse_util,
     Imp_syntax,
     Imp_parser,
-    Imp_lexer,
-    Generic_parser
+    Imp_lexer
   Modules:
+    Generic_parser,
     Interp_util,
     Xinterp_util,
     Tc_util,
