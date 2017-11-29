@@ -1,6 +1,5 @@
 %{
 (** A JavaScript parser that does not do semicolon insertion. *)
-open Prelude
 open JavaScript_syntax
 
 exception Expected_lvalue

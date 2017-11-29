@@ -1,5 +1,4 @@
 {
-open Prelude
 open Lexing
 open JavaScript_parser
 open JavaScript_syntax
@@ -76,9 +75,7 @@ rule token = parse
    | "\r\n" { new_line lexbuf; token lexbuf }
    | '\r' { new_line lexbuf; token lexbuf }
    | "/*"
-     { let start_p = Lexing.lexeme_start_p lexbuf in
-       let str = block_comment lexbuf in
-       let end_p = Lexing.lexeme_end_p lexbuf in
+     { let str = block_comment lexbuf in
        comments := str :: !comments;
        token lexbuf }
    | "//"[^ '\r' '\n']* ( '\r' | '\n' | "\r\n" ) { new_line lexbuf; token lexbuf }

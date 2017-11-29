@@ -1,4 +1,5 @@
-open Prelude
+type id = string
+[@@deriving show]
 
 type prefixOp =
   | PrefixLNot

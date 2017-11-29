@@ -1,4 +1,3 @@
-open Prelude
 open JavaScript_syntax
 open Lexing
 
@@ -10,9 +9,9 @@ let parse_javascript cin name =
       JavaScript_parser.program JavaScript_lexer.token lexbuf
     with
       |  Failure "lexing: empty token" ->
-           failwith (sprintf "lexical error")
+           failwith (Printf.sprintf "lexical error")
       | JavaScript_parser.Error ->
-           failwith (sprintf "parse error; unexpected token %s"
+           failwith (Printf.sprintf "parse error; unexpected token %s"
                        (lexeme lexbuf))
 
 let parse_javascript_from_channel cin name =
@@ -23,9 +22,9 @@ let parse_javascript_from_channel cin name =
       JavaScript_parser.program JavaScript_lexer.token lexbuf
     with
       |  Failure "lexing: empty token" ->
-           failwith (sprintf "lexical error")
+           failwith (Printf.sprintf "lexical error")
       | JavaScript_parser.Error ->
-           failwith (sprintf "parse error; unexpected token %s"
+           failwith (Printf.sprintf "parse error; unexpected token %s"
                        (lexeme lexbuf))
 
 let parse_expr cin name =
@@ -35,9 +34,9 @@ let parse_expr cin name =
       JavaScript_parser.expression JavaScript_lexer.token lexbuf
     with
       |  Failure "lexing: empty token" ->
-           failwith (sprintf "lexical error")
+           failwith (Printf.sprintf "lexical error")
       | JavaScript_parser.Error ->
-           failwith (sprintf "parse error")
+           failwith (Printf.sprintf "parse error")
 
 
 module Pretty = struct
@@ -183,7 +182,7 @@ module Pretty = struct
     | ArrayExpr (es) -> brackets [horz (commas (List.map expr es))]
     | ObjectExpr (ps) ->
         let f ( p, e) = sep [prop p; text ":"; expr e]
-        in vert [ text "{"; nest (vert (map f ps)); text "}" ]
+        in vert [ text "{"; nest (vert (List.map f ps)); text "}" ]
     | ThisExpr -> text "this"
     | VarExpr (x) -> text x
     | DotExpr (e,x) -> squish [expr e; text "."; text x]
@@ -204,13 +203,13 @@ module Pretty = struct
     | ParenExpr (e) -> parens [expr e]
     | ListExpr (e1,e2) -> sep (commas [expr e1; expr e2 ])
     | CallExpr (func,args) ->
-        squish [ expr func; parens [horz (commas (map expr args))] ]
+        squish [ expr func; parens [horz (commas (List.map expr args))] ]
     | FuncExpr (args,body) ->
-        vert [ sep [ text "function"; parens [horz (commas (map text args))] ];
+        vert [ sep [ text "function"; parens [horz (commas (List.map text args))] ];
                stmt body ]
     | NamedFuncExpr (name,args,body) ->
         vert [ sep [ text "function"; text name;
-                     parens [horz (commas (map text args))] ];
+                     parens [horz (commas (List.map text args))] ];
                stmt body ]
 
   and stmt s = match s with
@@ -240,15 +239,15 @@ module Pretty = struct
         vert [ sep  [text "for"; parens [horz [ for_init fi; expr e1; expr e2 ]] ];
                stmt s ]
     | TryStmt (body,catches,EmptyStmt) ->
-        vert (text "try" :: block body :: (map catch catches))
+        vert (text "try" :: block body :: (List.map catch catches))
     | TryStmt (body,catches,finally) ->
-        vert [ text "try"; block body; sep (map catch catches);
+        vert [ text "try"; block body; sep (List.map catch catches);
                text "finally"; block finally ]
     | ThrowStmt (e) -> sep [text "throw"; expr e; text ";"]
     | ReturnStmt (e) ->  sep [ text "return"; nest (expr e); text ";" ]
     | WithStmt (e,s) -> sep [text "with"; paren_exp e; stmt s]
     | VarDeclStmt (decls) ->
-        squish [ text "var "; horz (commas (map varDecl decls)); text ";" ]
+        squish [ text "var "; horz (commas (List.map varDecl decls)); text ";" ]
     | FuncStmt (name,args,body) ->
         sep [text "function"; text name;
              parens [horz (commas (List.map text args))];
@@ -258,7 +257,7 @@ module Pretty = struct
 
   let p_stmt = stmt
 
-  let p_prog (Prog (ss)) = vert (map p_stmt ss)
+  let p_prog (Prog (ss)) = vert (List.map p_stmt ss)
 
   let p_infixOp = infixOp
 

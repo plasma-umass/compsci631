@@ -1,4 +1,3 @@
-open Prelude
 open JavaScript_syntax
 
 val parse_javascript : string -> string -> prog
