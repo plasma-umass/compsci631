@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 357c4b57bc47e597e3c96a5c391adbcf)
+# DO NOT EDIT (digest: d4909d8f18675081c347ecbd601c3964)
 Imp
 Sketching
 Interp_util
@@ -7,4 +7,5 @@ Xinterp_util
 Arm
 Compiler_util
 Compiler_interp
+JavaScript
 # OASIS_STOP

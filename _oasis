@@ -22,7 +22,11 @@ Library compsci631
     Lexparse_util,
     Imp_syntax,
     Imp_parser,
-    Imp_lexer
+    Imp_lexer,
+    FormatExt,
+    JavaScript_lexer,
+    JavaScript_parser,
+    JavaScript_syntax
   Modules:
     Generic_parser,
     Interp_util,
@@ -33,7 +37,8 @@ Library compsci631
     Compiler_util,
     Compiler_interp,
     Arm,
-    PTest
+    PTest,
+    JavaScript
 
 Executable testtool
   Build$: flag(tests)
@@ -59,4 +64,5 @@ Document doc
     Xinterp_util,
     Arm,
     Compiler_util,
-    Compiler_interp
+    Compiler_interp,
+    JavaScript
