@@ -343,20 +343,22 @@ module Pretty = struct
     | ParenExpr (e) -> parens [expr e]
     | ListExpr (e1,e2) -> sep (commas [expr e1; expr e2 ])
     | CallExpr (func,args) ->
-        squish [ expr func; parens [horz (commas (List.map expr args))] ]
+        squish [
+          expr (match func with | FuncExpr _ -> ParenExpr func | _ -> func);
+          parens [horz (commas (List.map expr args))] ]
     | FuncExpr (args,body) ->
         vert [ sep [ text "function"; parens [horz (commas (List.map text args))] ];
-               stmt body ]
+               block body ]
     | NamedFuncExpr (name,args,body) ->
         vert [ sep [ text "function"; text name;
                      parens [horz (commas (List.map text args))] ];
-               stmt body ]
+          block body ]
 
   and stmt s = match s with
     | BlockStmt (ss) ->
         vert [ text "{"; nest (vert (List.map stmt ss)); text "}" ]
     | EmptyStmt -> text ";"
-    | ExprStmt e -> sep [ expr e; text ";" ]
+    | ExprStmt e -> horz [ expr e; text ";" ]
     | IfStmt (e,s1,s2) ->
         vert [ sep [ text "if"; paren_exp e ]; stmt s1; text "else"; stmt s2 ]
     | IfSingleStmt (e,s1) -> vert [ sep [text "if"; paren_exp e ]; stmt s1 ]
@@ -384,7 +386,7 @@ module Pretty = struct
         vert [ text "try"; block body; sep (List.map catch catches);
                text "finally"; block finally ]
     | ThrowStmt (e) -> sep [text "throw"; expr e; text ";"]
-    | ReturnStmt (e) ->  sep [ text "return"; nest (expr e); text ";" ]
+    | ReturnStmt (e) ->  horz [ text "return"; nest (expr e); text ";" ]
     | WithStmt (e,s) -> sep [text "with"; paren_exp e; stmt s]
     | VarDeclStmt (decls) ->
         squish [ text "var "; horz (commas (List.map varDecl decls)); text ";" ]
