@@ -378,7 +378,7 @@ module Pretty = struct
                      parens [horz [ for_in_init fii; text "in "; expr e]] ];
                block s ]
     | ForStmt (fi,e1,e2,s) ->
-        vert [ sep  [text "for"; parens [horz [ for_init fi; expr e1; expr e2 ]] ];
+        vert [ sep  [text "for"; parens [horz [ for_init fi; text "; "; expr e1; text "; "; expr e2 ]] ];
                stmt s ]
     | TryStmt (body,catches,EmptyStmt) ->
         vert (text "try" :: block body :: (List.map catch catches))
