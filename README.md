@@ -17,11 +17,11 @@ and Linux.
   ocaml -version
   ```
   
-  You should have version 4.04.2 installed (4.05 will not work). If the wrong version is
+  You should have version 4.06.1 installed (4.07 will not work). If the wrong version is
   installed, run the following command:
   
   ```
-  opam switch 4.04.2
+  opam switch 4.06.1
   ```
 
   Follow any on-screen directions that the command provides. In particular, you will probably
@@ -38,7 +38,7 @@ and Linux.
   ```
   
 
-- Finally, to install the support code for this class, run:
+- To install the support code for this class, run:
 
   ```
   opam pin add compsci631 https://github.com/plasma-umass/compsci631.git
@@ -46,3 +46,4 @@ and Linux.
   ```
 
   This will install the required support packages for COMPSCI631 assignments.
+
