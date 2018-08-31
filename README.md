@@ -47,3 +47,16 @@ and Linux.
 
   This will install the required support packages for COMPSCI631 assignments.
 
+Editor Setup
+============
+
+I strongly recommend using [Visual Studio Code](https://code.visualstudio.com)
+with the [OCaml and Reason IDE](https://marketplace.visualstudio.com/items?itemName=freebroccolo.reasonml) extension.
+
+To get the most of the extension, you'll need to install [Merlin](https://github.com/ocaml/merlin). Once installed,
+in the same directory as your OCaml code, create a file called `.merlin`
+with the line:
+
+    PKG compsci631
+
+This line configures auto-completion to use the types in the course library.
