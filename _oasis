@@ -38,7 +38,8 @@ Library compsci631
     Compiler_interp,
     Arm,
     PTest,
-    JavaScript
+    JavaScript,
+    Testing
 
 Executable testtool
   Build$: flag(tests)
