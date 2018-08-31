@@ -20,5 +20,6 @@ depends: [
   "mparser"         {>= "1.2" & < "1.3.0"}
   "ppx_deriving"    {>= "4.2" & < "4.3"}
   "ppx_test"        {>= "1.5.1" & < "1.5.2"}
+  "ppx_tools_versioned" {= "5.1"}
   "menhir"          {= "20180530"}
 ]
