@@ -68,4 +68,6 @@ Document doc
     Arm,
     Compiler_util,
     Compiler_interp,
-    JavaScript
+    JavaScript,
+    Compiler_util2,
+    ILVM
