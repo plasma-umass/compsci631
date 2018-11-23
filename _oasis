@@ -1,7 +1,7 @@
 OASISFormat:     0.4
 OCamlVersion:    >= 4.04.0
 Name:            umass-compsci631
-Version:         2.0.20
+Version:         2.0.21
 Synopsis:        Software for Programming Languages (COMPSCI631)
 Authors:         Arjun Guha
 License:         LGPL
@@ -39,7 +39,9 @@ Library compsci631
     Arm,
     PTest,
     JavaScript,
-    Testing
+    Testing,
+    Compiler_util2,
+    ILVM
 
 Executable testtool
   Build$: flag(tests)

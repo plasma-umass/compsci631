@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: eed47c66a2d972189dceca34aa98bdc4)
+# DO NOT EDIT (digest: ac527110e38faff3585792ff888fe5af)
 Generic_parser
 Interp_util
 Xinterp_util
@@ -12,6 +12,8 @@ Arm
 PTest
 JavaScript
 Testing
+Compiler_util2
+ILVM
 PL_util
 Lexparse_util
 Imp_syntax
