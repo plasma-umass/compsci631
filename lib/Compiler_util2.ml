@@ -126,7 +126,7 @@ module Interp = struct
 
   let eval_op2 (op : op2) (v1 : value) (v2 : value) = match op with
       | LT -> Bool (int v1 < int v2)
-      | GT -> Bool (int v2 > int v1)
+      | GT -> Bool (int v1 > int v2)
       | Eq -> Bool (v1 = v2)
       | Add -> Int (int v1 + int v2)
       | Sub -> Int (int v1 - int v2)
