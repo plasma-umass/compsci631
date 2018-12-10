@@ -48,7 +48,7 @@ module Printer = struct
         | Store (x, v, rest) ->
             fprintf fmt "*r%d = %s;\n%a" x (of_value v) of_instr rest;
         | Ifz (x, rest1, rest2) ->
-            fprintf fmt "ifz (r%d) {\n@[%a@]\n} else {\n@[%a@]\n}" x
+            fprintf fmt "ifz r%d {\n@[%a@]\n} else {\n@[%a@]\n}" x
                 of_instr rest1 of_instr rest2;
         | Malloc (x, v, rest) ->
             fprintf fmt "r%d = malloc(%s);\n%a" x (of_value v) of_instr rest;
